@@ -56,7 +56,7 @@
                         socket_bind($s, '0.0.0.0', $this->src_port);
                         socket_set_option($s, SOL_SOCKET, SO_RCVTIMEO, array("sec" => $this->timeout, "usec" => 0));
 
-                        $startTime = time();
+                        $startTime = microtime(true);
 
                         try {
                                 socket_connect($s, $this->dest_addr, $this->dest_port);
@@ -67,7 +67,7 @@
                                 return null;
                         }
 
-                        $endTime = time();
+                        $endTime = microtime(true);
 
                         try {
                                 socket_shutdown($s);
@@ -80,8 +80,7 @@
 
                 public function ping($count, $delay = 0) {
                         $results = array();
-                        for ($i = 0; $i < $count + 1; $i++) {
-                                $i++;
+                        for ($i = 0; $i < $count; $i++) {
                                 $results[] = $this->ping_once();
                                 sleep($delay);
                         }
